@@ -49,7 +49,7 @@ func (c *Client) ConnectOpen(devnum int32) error {
 	tryOpenFile(ipmiDev3)
 
 	if file == nil {
-		return fmt.Errorf("ipmi dev file not opened")
+		return fmt.Errorf("ipmi dev file #%d not opened", devnum)
 	}
 
 	c.Debugf("opened ipmi dev file: %v, descriptor is: %d\n", file, file.Fd())

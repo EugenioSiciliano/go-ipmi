@@ -145,9 +145,11 @@ func (c *Client) GetFRUs() ([]*FRU, error) {
 		var deviceID uint8 = 0x00
 		fru, err := c.GetFRU(deviceID, "Builtin FRU")
 		if err != nil {
-			return nil, fmt.Errorf("GetFRU device id (%#02x) failed, err: %s", deviceID, err)
+			c.Debugf("GetFRU device id (%#02x) failed, err: %s", deviceID, err)
 		}
-		frus = append(frus, fru)
+		if fru != nil {
+			frus = append(frus, fru)
+		}
 	}
 
 	// Walk the SDRs to look for FRU Devices and Management Controller Devices.
@@ -184,9 +186,11 @@ func (c *Client) GetFRUs() ([]*FRU, error) {
 			case 0x00, 0x02:
 				fru, err := c.GetFRU(deviceID, deviceName)
 				if err != nil {
-					return nil, fmt.Errorf("GetFRU sdr device id (%#02x) failed, err: %s", deviceID, err)
+					c.Debugf("GetFRU sdr device id (%#02x) failed, err: %s", deviceID, err)
 				}
-				frus = append(frus, fru)
+				if fru != nil {
+					frus = append(frus, fru)
+				}
 
 			case 0x01:
 				// *   0x01 = DIMM Memory ID
